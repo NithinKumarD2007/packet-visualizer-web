@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Network Reports</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="page-title">
+    <img src="/static/assets/logo.png"
+         alt="Packet Visualizer Logo"
+         class="logo">
+
+    <h2>Packet Visualizer</h2>
+</div>
+        <a href="/">🏠 Dashboard</a>
+        <a href="/packets-page">📦 Packets</a>
+        <a href="/intelligence-page">🧠 Intelligence</a>
+        <a href="/reports-page">📄 Reports</a>
+
+    </div>
+
+    <div class="main">
+
+        <h1>Network Reports</h1>
+
+        <div class="reports-grid">
+
+            <!-- Summary -->
+
+            <div class="card">
+
+                <h2>Report Summary</h2>
+
+                <p><strong>Total Packets:</strong>
+                    <span id="totalPackets">0</span>
+                </p>
+
+                <p><strong>Top Internal:</strong>
+                    <span id="internalIP">--</span>
+                </p>
+
+                <p><strong>Top External:</strong>
+                    <span id="externalIP">--</span>
+                </p>
+
+                <p><strong>Threat Level:</strong>
+                    <span id="threatLevel">LOW</span>
+                </p>
+
+            </div>
+
+            <!-- Pie Chart -->
+
+            <div class="card">
+
+                <h2>Protocol Distribution</h2>
+
+                <canvas id="protocolChart"></canvas>
+
+            </div>
+
+            <!-- Summary Text -->
+
+            <div class="card">
+
+                <h2>Network Summary</h2>
+
+                <div id="summary"></div>
+
+            </div>
+
+            <!-- Export -->
+
+            <div class="card">
+
+                <h2>Export Reports</h2>
+
+                <button id="csvBtn">Export CSV</button>
+
+                <button id="pdfBtn">Export PDF</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="/static/js/reports.js"></script>
+
+</body>
+
+</html>

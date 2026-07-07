@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Network Intelligence</title>
+
+<link rel="stylesheet" href="/static/css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="page-title">
+    <img src="/static/assets/logo.png"
+         alt="Packet Visualizer Logo"
+         class="logo">
+
+    <h2>Packet Visualizer</h2>
+</div>
+<a href="/">🏠 Dashboard</a>
+
+<a href="/packets-page">📦 Packets</a>
+
+<a href="/intelligence-page">🧠 Intelligence</a>
+
+<a href="/reports-page">📄 Reports</a>
+
+</div>
+
+<div class="main">
+
+<h1>Network Intelligence</h1>
+
+<div class="intel-grid">
+
+<div class="card" id="internalCard">
+
+<h2>🏠 Top Internal Device</h2>
+
+<h3 id="internalIP">--</h3>
+
+<p id="internalPackets">0 Packets</p>
+
+</div>
+
+<div class="card" id="externalCard">
+
+<h2>🌍 Top External Device</h2>
+
+<h3 id="externalIP">--</h3>
+
+<p id="externalPackets">0 Packets</p>
+
+</div>
+
+<div class="card">
+
+<h2>Top Source IPs</h2>
+
+<table id="sourceTable">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Source IP</th>
+            <th>Packets</th>
+        </tr>
+    </thead>
+
+    <tbody></tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Top Destination IPs</h2>
+
+<table id="destinationTable">
+
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Destination IP</th>
+            <th>Packets</th>
+        </tr>
+    </thead>
+
+    <tbody></tbody>
+
+</table>
+
+</div>
+
+<div class="card protocol-card">
+
+    <h2>Protocol Usage</h2>
+
+    <div id="protocolStats"></div>
+
+</div>
+
+<div class="card">
+
+    <h2>💡 Network Insights</h2>
+
+    <div id="insights">
+
+    </div>
+
+</div>
+
+<script src="/static/js/intelligence.js"></script>
+
+</body>
+
+</html>

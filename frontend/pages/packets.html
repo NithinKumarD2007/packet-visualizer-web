@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Packets</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="page-title">
+    <img src="/static/assets/logo.png"
+         alt="Packet Visualizer Logo"
+         class="logo">
+
+    <h2>Packet Visualizer</h2>
+</div>
+    <a href="/">🏠 Dashboard</a>
+
+    <a href="/packets-page">📦 Packets</a>
+
+    <a href="/intelligence-page"> 🧠 Intelligence</a>
+
+    <a href="/reports">📄 Reports</a>
+
+</div>
+
+<div class="main">
+
+    <h1>Packets</h1>
+
+    <div class="toolbar">
+
+        <input
+            id="search"
+            placeholder="Search IP..."
+        >
+    
+        <select id="protocol">
+    
+            <option value="">All Protocols</option>
+    
+            <option>TCP</option>
+    
+            <option>UDP</option>
+    
+            <option>IGMP</option>
+    
+        </select>
+    
+    </div>
+
+    <div class="packet-layout">
+
+        <div class="packet-table">
+    
+            <table id="packetTable">
+    
+                <thead>
+    
+                    <tr>
+    
+                        <th>ID</th>
+                        <th>Source</th>
+                        <th>Destination</th>
+                        <th>Protocol</th>
+                        <th>Size</th>
+    
+                    </tr>
+    
+                </thead>
+    
+                <tbody></tbody>
+    
+            </table>
+    
+        </div>
+    
+        <div id="details" class="packet-details">
+    
+            <h2>Packet Details</h2>
+    
+            <p>Select a packet...</p>
+    
+        </div>
+    
+    </div>  
+
+<script src="/static/js/packets.js"></script>
+
+</body>
+
+</html>
