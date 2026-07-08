@@ -39,7 +39,9 @@ async def packets_page():
 
 @app.get("/intelligence-page")
 async def analysis_page():
-    return FileResponse("frontend/pages/intelligence.html")
+    return FileResponse(
+        os.path.join(frontend_path, "pages", "intelligence.html")
+    )
     
 
 @app.get("/reports-page")
