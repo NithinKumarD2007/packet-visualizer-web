@@ -402,13 +402,7 @@ button:disabled{
     gap:15px;
 }
 
-.logo{
-    width:70px;
-    height:70px;
-    background:#333;
-    padding:5px;
-    border-radius:8px;
-}
+
 
 .sidebar a.active{
     background:#58a6ff;
