@@ -74,7 +74,22 @@ document
 .getElementById("protocol")
 .addEventListener("change", loadPackets);
 
-loadPackets();
+let loading = false;
+
+async function refreshPackets() {
+
+    if (loading) return;
+
+    loading = true;
+
+    await loadPackets();
+
+    loading = false;
+}
+
+refreshPackets();
+
+setInterval(refreshPackets, 1000);
 
 function selectPacket(row,id){
 

@@ -26,14 +26,19 @@ const protocolChart = new Chart(
     const response=await fetch("/reports");
     
     const data=await response.json();
+    console.log(data);
     
-    document.getElementById("totalPackets").textContent=data.totalPackets;
-    
-    document.getElementById("internalIP").textContent=data.topInternal.ip;
-    
-    document.getElementById("externalIP").textContent=data.topExternal.ip;
-    
-    document.getElementById("threatLevel").textContent=data.threat;
+    document.getElementById("totalPackets").textContent =
+    data.summary.total;
+
+document.getElementById("internalIP").textContent =
+    data.summary.topInternal;
+
+document.getElementById("externalIP").textContent =
+    data.summary.topExternal;
+
+document.getElementById("threatLevel").textContent =
+    data.summary.threat;
     
     protocolChart.data.datasets[0].data=[
     
@@ -47,21 +52,14 @@ const protocolChart = new Chart(
     
     protocolChart.update();
     
-    document.getElementById("summary").innerHTML=`
-    
-    <ul>
-    
-    <li>Total packets captured: <b>${data.totalPackets}</b></li>
-    
-    <li>Top internal device: <b>${data.topInternal.ip}</b></li>
-    
-    <li>Top external device: <b>${data.topExternal.ip}</b></li>
-    
-    <li>Threat Level: <b>${data.threat}</b></li>
-    
-    </ul>
-    
-    `;
+    document.getElementById("summary").innerHTML = `
+<ul>
+    <li>Total packets captured: <b>${data.summary.total}</b></li>
+    <li>Top internal device: <b>${data.summary.topInternal}</b></li>
+    <li>Top external device: <b>${data.summary.topExternal}</b></li>
+    <li>Threat Level: <b>${data.summary.threat}</b></li>
+</ul>
+`;
     
     }
     

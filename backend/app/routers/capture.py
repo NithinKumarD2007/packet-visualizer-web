@@ -1,29 +1,13 @@
 from fastapi import APIRouter
-from threading import Thread
-
-from backend.app.services.packet_capture import (
-    start_capture,
-    stop_capture_function
-)
+from backend.app.routers import agent
 
 router = APIRouter()
-
-capture_thread = None
 
 
 @router.post("/capture/start")
 def start():
 
-    global capture_thread
-
-    if capture_thread is None or not capture_thread.is_alive():
-
-        capture_thread = Thread(
-            target=start_capture,
-            daemon=True
-        )
-
-        capture_thread.start()
+    agent.capture_enabled = True
 
     return {
         "status": "Capture Started"
@@ -33,7 +17,7 @@ def start():
 @router.post("/capture/stop")
 def stop():
 
-    stop_capture_function()
+    agent.capture_enabled = False
 
     return {
         "status": "Capture Stopped"

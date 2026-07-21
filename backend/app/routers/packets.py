@@ -3,7 +3,6 @@ from backend.app.database import get_connection
 
 router = APIRouter()
 
-
 @router.get("/packets")
 def get_packets(
     search: str = Query(default=""),
@@ -20,7 +19,6 @@ def get_packets(
         destination_ip,
         protocol,
         packet_size
-        LIMIT 100;
     FROM packets
     WHERE 1=1
     """
@@ -43,12 +41,13 @@ def get_packets(
         query += " AND protocol = %s "
         params.append(protocol)
 
-    query += " ORDER BY id DESC "
+    query += " ORDER BY id DESC LIMIT 100"
 
     cursor.execute(query, params)
 
     rows = cursor.fetchall()
 
+    cursor.close()
     conn.close()
 
     return [

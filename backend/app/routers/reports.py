@@ -21,83 +21,15 @@ import matplotlib.pyplot as plt
 import os
 
 from reportlab.platypus import Image
-from reportlab.pdfgen import canvas
 
+from backend.app.services.analytics import get_reports_data
 router = APIRouter()
 
 
 @router.get("/reports")
 def get_report():
 
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    # Total packets
-    cursor.execute("SELECT COUNT(*) FROM packets")
-    total_packets = cursor.fetchone()[0]
-
-    # Top internal IP
-    cursor.execute("""
-        SELECT  source_ip, COUNT(*) AS total
-        FROM packets
-        WHERE source_ip LIKE '192.168.%'
-        GROUP BY source_ip
-        ORDER BY total DESC
-        LIMIT 1;
-    """)
-
-    row = cursor.fetchone()
-
-    top_internal = {
-        "ip": row[0] if row else "--",
-        "packets": row[1] if row else 0
-    }
-
-    # Top external IP
-    cursor.execute("""
-        SELECT source_ip, COUNT(*) AS total
-        FROM packets
-        WHERE source_ip NOT LIKE '192.168.%'
-        GROUP BY source_ip
-        ORDER BY total DESC
-        LIMIT 1;
-    """)
-
-    row = cursor.fetchone()
-
-    top_external = {
-        "ip": row[0] if row else "--",
-        "packets": row[1] if row else 0
-    }
-
-    # Protocol statistics
-    cursor.execute("""
-        SELECT protocol, COUNT(*)
-        FROM packets
-        GROUP BY protocol
-    """)
-
-    protocol_counts = {}
-
-    for protocol, count in cursor.fetchall():
-        protocol_counts[protocol] = count
-
-    tcp = protocol_counts.get("TCP", 0)
-    udp = protocol_counts.get("UDP", 0)
-    igmp = protocol_counts.get("IGMP", 0)
-
-
-    return {
-        "totalPackets": total_packets,
-        "topInternal": top_internal,
-        "topExternal": top_external,
-        "protocols": {
-            "tcp": tcp,
-            "udp": udp,
-            "igmp": igmp
-        },
-        "threat": "LOW"
-    }
+    return get_reports_data()
 
 @router.get("/reports/export/csv")
 def export_csv():

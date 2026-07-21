@@ -7,7 +7,6 @@ cursor = conn.cursor()
 
 
 stop_capture = False
-commit_counter = 0
 sniffer = None
 
 packet_counter = 0
@@ -57,24 +56,8 @@ def packet_callback(packet):
                 )
             )
 
-            commit_counter += 1
-            packet_counter += 1
-
-            global last_time
-            global pps
-
-            current_time = time.time()
-
-            if current_time - last_time >= 1:
-
-                pps = packet_counter
-
-                packet_counter = 0
-
-                last_time = current_time
-
-            if commit_counter % 100 == 0:
-                conn.commit()
+           
+            conn.commit()
 
         except Exception as e:
 

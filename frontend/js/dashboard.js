@@ -1,5 +1,6 @@
 let previousTotal = null;
-
+let selectedDevice = null;
+let packetCounter = 0;
 let chart;
 
 const ctx = document.getElementById("protocolChart");
@@ -36,6 +37,7 @@ async function loadDashboard() {
 
     updateTopTalkers(data.topTalkers);
 
+    console.log(data);
 }
 
 function updateStats(data) {
@@ -49,7 +51,11 @@ function updateStats(data) {
     threat.textContent = data.threat;
     threat.className = data.threat.toLowerCase();
 
-    document.getElementById("reason").textContent = data.reason;
+    const reason = document.getElementById("reason");
+
+if(reason){
+    reason.textContent = data.reason;
+}
 
     chart.data.datasets[0].data = [
         data.tcp,
@@ -155,17 +161,20 @@ function updatePackets(packets) {
 
 }
 
-loadDashboard();
 
-setInterval(loadDashboard, 3000);
-
-document
-.getElementById("startBtn")
+document.getElementById("startBtn")
 .addEventListener("click", async () => {
 
-    await fetch("/capture/start", {
-        method: "POST"
+    if(!selectedDevice){
+        alert("Select a device first");
+        return;
+    }
+
+    await fetch(`/agent/start/${selectedDevice}`,{
+        method:"POST"
     });
+
+
     
     document.getElementById("startBtn").disabled = true;
     document.getElementById("stopBtn").disabled = false;
@@ -181,15 +190,23 @@ document
 
 });
 
-document
-.getElementById("stopBtn")
+
+document.getElementById("stopBtn")
 .addEventListener("click", async () => {
 
-    await fetch("/capture/stop", {
-        method: "POST"
+    if(!selectedDevice){
+        alert("Select a device first");
+        return;
+    }
+
+    await fetch(`/agent/stop/${selectedDevice}`,{
+        method:"POST"
     });
 
-    document.getElementById("startBtn").disabled = false;
+
+    document.getElementById("startBtn").disabled =
+    selectedDevice === null;
+
     document.getElementById("stopBtn").disabled = true;
 
     // Reset traffic graph
@@ -249,7 +266,7 @@ function updateTopTalkers(talkers) {
 }
 
 function updateTrafficChart(pps){
-
+    
     if(pps <= 0){
         return;
     }
@@ -268,4 +285,129 @@ function updateTrafficChart(pps){
 
     trafficChart.update();
 
+}
+
+async function loadAgents() {
+
+    const response = await fetch("/agent/list");
+
+    const agents = await response.json();
+
+    const onlineAgents =
+    agents.filter(a => a.online);
+
+    const deviceCount =
+    document.getElementById("deviceCount");
+
+if(deviceCount){
+    deviceCount.textContent =
+        onlineAgents.length;
+}
+
+    const container = document.getElementById("agentList");
+
+    container.innerHTML = "";
+
+    agents.forEach(agent => {
+
+        const active =
+            selectedDevice === agent.device
+                ? "selected-agent"
+                : "";
+container.innerHTML += `
+<div class="agent-card ${active}">
+
+    <div class="agent-header">
+        🖥 <strong>${agent.device}</strong>
+    </div>
+
+    <div class="agent-status">
+        <span class="${agent.online ? "online" : "offline"}">
+            ${agent.online ? "🟢 Online" : "🔴 Offline"}
+        </span>
+    </div>
+
+    <div class="agent-status">
+        <span class="${agent.capture ? "running" : "stopped"}">
+            ${agent.capture ? "🟢 Running" : "⚪ Stopped"}
+        </span>
+    </div>
+
+    <button
+        class="select-device-btn"
+        onclick="selectDevice('${agent.device}')">
+
+        ${
+            selectedDevice === agent.device
+            ? "✓ Selected"
+            : "Select Device"
+        }
+
+    </button>
+
+</div>
+`;
+
+
+    });
+
+}
+
+document.getElementById("startBtn").disabled = true;
+document.getElementById("stopBtn").disabled = true;
+
+document.getElementById("selectedDeviceName").textContent = "None";
+
+loadDashboard();
+loadAgents();
+setInterval(loadDashboard,3000);
+setInterval(loadAgents,3000);
+function selectDevice(device){
+
+    selectedDevice = device;
+
+    document.getElementById("selectedDeviceName").innerHTML =
+        "🖥 " + device;
+
+    document.getElementById("startBtn").disabled = false;
+    document.getElementById("stopBtn").disabled = true;
+
+    loadAgents();
+
+}
+
+function addPacket(packet){
+
+    const tbody =
+        document.querySelector("#packetTable tbody");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>LIVE</td>
+        <td>${packet.source_ip}</td>
+        <td>${packet.destination_ip}</td>
+        <td>${packet.protocol}</td>
+    `;
+
+    tbody.prepend(row);
+
+    if(tbody.rows.length > 20){
+        tbody.deleteRow(20);
+    }
+
+   
+    packetCounter++;
+
+    loadDashboard();
+
+    setInterval(() => {
+
+    document.getElementById("pps").textContent = packetCounter;
+
+    updateTrafficChart(packetCounter);
+
+    packetCounter = 0;
+
+}, 1000);
 }
