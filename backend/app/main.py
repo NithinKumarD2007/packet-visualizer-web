@@ -12,6 +12,7 @@ from backend.app.routers import ingest
 from backend.app.routers import agent
 from fastapi import WebSocket
 from backend.app.websocket import manager
+from fastapi.responses import FileResponse
 
 app = FastAPI(title="Packet Visualizer API")
 
@@ -59,7 +60,10 @@ async def reports_page():
             "reports.html"
         )
     )
+
+
 @app.websocket("/ws")
+
 async def websocket_endpoint(websocket: WebSocket):
 
     await manager.connect(websocket)
