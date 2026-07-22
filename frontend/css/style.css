@@ -46,11 +46,11 @@
     color:#58a6ff;
 }
 
-/* Buttons */
 .sidebar button{
     width:100%;
     padding:12px;
-    margin-bottom:15px;
+    margin-top:8px;
+    margin-bottom:12px;
     background:#238636;
     border:none;
     color:white;
@@ -59,16 +59,45 @@
     border-radius:8px;
 }
 
+.selected-device-card{
+    margin-top:30px;
+    padding:15px;
+    border:1px solid #30363d;
+    border-radius:10px;
+    background:#1b1f27;
+}
+
+.selected-device-card h3{
+    margin-bottom:10px;
+}
+
+#selectedDeviceName{
+    margin:0 0 15px;
+    color:#58a6ff;
+    font-weight:bold;
+}
 .sidebar button:last-of-type{
     background:#da3633;
 }
-    
+
+.selected-device-card{
+    margin-top: 30px;
+}
+
+.current-device{
+    margin-top:30px;
+}
     .stat{
     
     margin-top:30px;
     
     }
-    
+
+    #selectedDeviceName{
+    margin: 12px 0 20px;
+    font-weight: bold;
+    color: #58a6ff;
+}
     .stat h1{
     
     font-size:40px;
@@ -589,3 +618,4 @@ color:#00e5ff;
     font-size:14px;
     line-height:1.4;
 }
+
